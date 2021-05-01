@@ -1,122 +1,131 @@
-#include "std_lib_facilities.h"
+#include <iostream>
+#include <stdexcept>
+#include <vector>
+#include <list>
+#include <array>
+#include <string>
+#include <algorithm>
 
-template<class T, int N>
-struct array {
-    typedef T value_type;
-    typedef T* iterator;
-    typedef const T* const_iterator;
-    typedef unsigned int size_type;
+using namespace std;
 
-    T elems[N];
 
-    iterator begin() { return elems; }
-    const_iterator begin() const { return elems; }
-    iterator end() { return elems+N; }
-    const_iterator end() const { return elems+N; }
-
-    size_type size() const { return N; }
-
-    T& operator[](int n) { return elems[n]; }
-    const T& operator[](int n) const { return elems[n]; }
-
-    T* data() { return elems; }
-    const T* data() const { return elems; }
-};
-
-template<class Iter>
-void print(Iter f, Iter e, const string& s)
+template<typename T>
+void print(T& t)
 {
-    cout << s << ": { ";
-    while (f!=e) {
-        cout << *f << ' ';
-        ++f;
-    }
-    cout << "}\n";
+    for (auto& a : t)
+        cout << a <<" ";
+    cout << endl;
 }
 
-// 6
-template<class Iter1, class Iter2>
-Iter2 my_copy(Iter1 f1, Iter1 e1, Iter2 f2)
+template<typename T>
+void increment(T& t, int n)
 {
-    while (f1!=e1) {
-        *f2 = *f1;
-        ++f1;
+    for(auto& a : t)
+        a += n;
+}
+
+//6
+template<typename Iter1, typename Iter2>
+Iter2 my_copy (Iter1 f1, Iter1 e1, Iter2 f2)
+{
+    for(Iter1 p = f1; p != e1; ++p)
+    {   
+        *f2 = *p;
         ++f2;
     }
+    
     return f2;
 }
 
 int main()
-try {
-    // 1
-    const int arr_sz = 10;
-    array<int,arr_sz> ai;
-    for (int i = 0; i<ai.size(); ++i) ai[i] = i;
-    print(ai.begin(),ai.end(),"ai");
+try{    
+    //1-4
+    const int size = 10;
 
-    // 2
-    vector<int> vi;
-    for (int i = 0; i<arr_sz; ++i) vi.push_back(i);
-    print(vi.begin(),vi.end(),"vi");
-
-    // 3
-    list<int> li;
-    for (int i = 0; i<arr_sz; ++i) li.push_back(i);
-    print(li.begin(),li.end(),"li");
-
-    // 4
-    array<int,arr_sz> ai_cp = ai;
-    print(ai_cp.begin(),ai_cp.end(),"ai_cp");
-    vector<int> vi_cp = vi;
-    print(vi_cp.begin(),vi_cp.end(),"vi_cp");
-    list<int> li_cp = li;
-    print(li_cp.begin(),li_cp.end(),"li_cp");
-
-    // 5
-    for (array<int,arr_sz>::iterator p = ai.begin(); p!=ai.end(); ++p)
-        *p += 2;
-    print(ai.begin(),ai.end(),"ai+=2");
-
-    for (vector<int>::iterator p = vi.begin(); p!=vi.end(); ++p)
-        *p += 3;
-    print(vi.begin(),vi.end(),"vi+=3");
-
-    for (list<int>::iterator p = li.begin(); p!=li.end(); ++p)
-        *p += 5;
-    print(li.begin(),li.end(),"li+=5");
-
-    // 7
-    vector<int>::iterator v_it = my_copy(ai.begin(),ai.end(),vi.begin());
-    array<int,arr_sz>::iterator a_it = my_copy(li.begin(),li.end(),ai.begin());
-
-    if (v_it!=vi.begin() && a_it!=ai.begin()) {
-        print(ai.begin(),ai.end(),"ai copied from li");
-        print(vi.begin(),vi.end(),"vi copied from ai");
-        print(li.begin(),li.end(),"li");
+    int ten[size];
+    for (int i = 0; i < size; ++i)
+    {
+        ten[i] = i;
     }
+    
+    array<int, size> a;
+    copy(ten, ten+size, a.begin());
 
-    // 8
-    v_it = find(vi.begin(),vi.end(),3);
-    if (v_it != vi.end())
-        cout << "In vi, 3 has index " << v_it-vi.begin() << ".\n";
+    cout << "Array: ";
+    print(a);
 
-    list<int>::iterator l_it = find(li.begin(),li.end(),27);
+    vector<int> v(size);
+    copy(ten, ten+size, v.begin());
+    cout << "Vector: ";
+    print(v);
 
-    if (l_it!=li.end()) {
-        int idx = 0;
-        for (list<int>::iterator iter = li.begin(); iter!=l_it; ++iter)
-            ++idx;
-        cout << "In li, 27 has index " << idx << ".\n";
+    list<int> l(size);
+    copy(ten, ten+size, l.begin());
+    cout << "List: ";
+    print(l);
+
+    int a2[size];
+    for (int i = 0; i < size; ++i)
+    {
+        a2[i] = a[i];
     }
+    cout <<"\nArray copy: ";
+    print(a2);
+
+    vector<int> v2;
+    v2 = v;
+    cout << "Vector copy: ";
+    print(v2);
+
+    list<int> l2;
+    l2 = l;
+    cout << "List copy: ";
+    print(l2);
+
+    //5
+    increment(a, 2);
+    increment(v, 3);
+    increment(l, 5);
+
+    
+    cout << "\nArray incremented (by 2): ";
+    print(a);
+    cout << "Vector incremented (by 3): ";
+    print(v);
+    cout << "List incremented (by 5): ";
+    print(l);
+
+
+    //7
+    my_copy(a.begin(), a.end(), v.begin());
+    my_copy(l.begin(), l.end(), a.begin());
+    cout << "\nArray after copying to list: ";
+    print(a);
+    cout << "Vector after copying to array: ";
+    print(v);
+    cout << "List after copying: ";
+    print(l);
+    cout << endl;
+
+    //8
+    cout << "Finding the number 3 in the vector: ";
+    auto p = find(v.begin(), v.end(), 3);
+    if(p!=v.end()) cout << "The number has the index of : " << p-v.begin() << endl;
     else
-        cout << "27 is not in li.\n";
-}
-catch (Range_error& re) {
-    cerr << "bad index: " << re.index << "\n";
-}
-catch (exception& e) {
-    cerr << "exception: " << e.what() << endl;
-}
-catch (...) {
-    cerr << "exception\n";
+        cout << "Number not found!" << endl;
+
+    cout << "Finding the number 27 in the list: ";
+    auto q = find(l.begin(), l.end(), 27);
+    if(q!=l.end()) cout << "The number has the index of : " << distance(l.begin(), q) << endl;
+    else
+        cout << "Number not found!" << endl;
+
+    return 0;
+
+}catch(exception& e){
+    cerr << "Exception: " << e.what() << endl;
+    return 1;
+}catch(...){
+    cerr << "Unknown exception\n";
+    return 2;
 }

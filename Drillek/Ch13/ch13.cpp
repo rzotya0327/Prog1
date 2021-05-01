@@ -7,11 +7,13 @@
 int main() {
 	using namespace Graph_lib;
 
+	//01
     int xmax = 800;
     int ymax = 1000;
 
     Simple_window win {Point{100,100}, xmax, ymax, "Canvas"};
 
+    //02
     Lines grid;
     int x_size = 800;
     int y_size = 800;
@@ -20,13 +22,15 @@ int main() {
     	grid.add(Point(0,i), Point(x_size,i));
     }
 
+    //03
     Vector_ref<Rectangle> vr;
     for (int i = 0; i < 8; ++i) {
-    	vr.push_back(new Rectangle(Point(i*100, i*100),101,101));
+    	vr.push_back(new Rectangle(Point(i*100, i*100),101,101));	//add unnamed
     	vr[vr.size()-1].set_fill_color(Color::red);
     	win.attach(vr[vr.size()-1]);
     }
 
+    //04
     Image pic1(Point(200,0), "badge.jpg");
     pic1.set_mask(Point{200,0},200,200);
 	win.attach(pic1);
@@ -38,6 +42,7 @@ int main() {
 	win.attach(pic3);
     win.wait_for_button();
 
+    //05
     Image pic4(Point(0,0), "badge.jpg");
     pic4.set_mask(Point(110,70), 100,100);
     win.attach(pic4);

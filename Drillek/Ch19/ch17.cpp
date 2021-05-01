@@ -1,6 +1,6 @@
 #include "std_lib_facilities.h"
 
-template<class T> struct S {
+template<typename T> struct S {
     S() : val(T()) { }
     S(T d) : val(d) { }     // 2
     T& operator=(const T&); // 10
@@ -8,26 +8,26 @@ template<class T> struct S {
     const T& get() const;   // 11
     void set(const T& d);   // 9
 private:
-    T val;
+    T val;  // 7
 };
 
-template<class T> T& S<T>::operator=(const T& d)	// 10. feladat
+template<typename T> T& S<T>::operator=(const T& d)	// 10. feladat
 {
     val = d;
     return val;
 }
 
 // 6. feladat
-template<class T> T& S<T>::get() { return val; }	// get definíciója a classon kívül
+template<typename T> T& S<T>::get() { return val; }	// get definíciója a classon kívül
 
-template<class T> const T& S<T>::get() const { return val; }
+template<typename T> const T& S<T>::get() const { return val; }
 
-template<class T> void S<T>::set(const T& d) { val = d; }
+template<typename T> void S<T>::set(const T& d) { val = d; }
 
 // -----------------------------------------------------------------------------
 
 // 12. feladat
-template<class T> istream& operator>>(istream& is, S<T>& ss)
+template<typename T> istream& operator>>(istream& is, S<T>& ss)
 {
     T v;
     cin >> v;
@@ -36,7 +36,7 @@ template<class T> istream& operator>>(istream& is, S<T>& ss)
     return is;
 }
 
-template<class T> void read_val(T& v)
+template<typename T> void read_val(T& v)
 {
     cin >> v;
 }
@@ -44,7 +44,7 @@ template<class T> void read_val(T& v)
 // -----------------------------------------------------------------------------
 
 // Drill 14
-template<class T> ostream& operator<<(ostream& os, const vector<T>& d)
+template<typename T> ostream& operator<<(ostream& os, const vector<T>& d)
 {
     os << "{ ";
     for (int i = 0; i<d.size(); ++i) {
@@ -56,7 +56,7 @@ template<class T> ostream& operator<<(ostream& os, const vector<T>& d)
     return os;
 }
 
-template<class T> istream& operator>>(istream& is, vector<T>& d)
+template<typename T> istream& operator>>(istream& is, vector<T>& d)
 {
     char ch1;
     char ch2;

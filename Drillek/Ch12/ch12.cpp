@@ -107,7 +107,7 @@ try {
 	<< "; window size: " << win.x_max() << "*" << win. y_max();
 	Text sizes {Point{100,20},oss.str()};	//str visszadja a fenti sort
 	
-	Image cal {Point{225,225},"snow_cpp.gif"};
+	Image cal {Point{225,225},"badge.jpg"};
 	cal.set_mask(Point{40,40},200,150);	//a kép középső részének megjelenítése
 	
 	win.attach(c);
